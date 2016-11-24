@@ -1,0 +1,2 @@
+ubuntu用shadowsocks+polipo做代理,git的代理配置如下:
+git config --global http.proxy 127.0.0.1:8123

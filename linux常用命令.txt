@@ -1,0 +1,54 @@
+1.【df】
+df是以磁盘分区为单位来查看文件系统。
+/dev/hdb2 75G 75G 0 100% /, 以此为例。
+就是HD硬盘借口的第二个硬盘(b)上，里面的第二个分区(2），容量是75G，用了75G，可用是0，因此利用率是100%, 他被挂载到根分区目录上（/）。
+
+2.【u盘挂载】
+a.
+首先你得保证你的U盘的格式是fat格式。
+先进入/mnt/目录新建一个usb目录
+cd /mnt/
+mkidr usb
+b.
+先fdisk -l，然后插上U盘，fdisk -l
+查看是否有新的硬盘添加上来了？
+c.
+然后执行挂载
+mount -t?vfat /dev/sdb /mnt/usb
+这里-t vfat 是指的fat的格式，/dev/sdb指的是U盘，/mnt/usb是挂载的地方
+d.
+cd /mnt/usb
+进入这里查看是否能查看到u盘里的内容？
+如果，没有就新建文件，然后umount /dev/sdb 如果文件消失，而再挂载，又显示，那就表示挂载成功啦。
+
+3.【svn的免密码设置】
+在.subversion里面最后加如下几行:
+[groups]
+sslhosts = xxxx.xxx.com
+
+[sslhosts]
+ssl-client-cert-file = /home/xxxxxx.pfx
+ssl-client-cert-password = xxxxxx
+
+4.【linux的网络设置--静态ip】
+You can now configure your static IP Address by modifying /etc/network/interfaces :
+auto eth0
+iface eth0 inet static
+address 10.1.1.100
+netmask 255.255.255.0
+gateway 10.1.1.1
+
+You can now restart eth0 by doing :
+sudo ifdown eth0
+sudo ifup eth0
+
+4.【linux的网络设置--dhcp】
+You can now configure your static IP Address by modifying /etc/network/interfaces :
+auto eth0
+iface eth0 inet dhcp
+
+You can now restart eth0 by doing :
+sudo ifdown eth0
+sudo ifup eth0
+
+

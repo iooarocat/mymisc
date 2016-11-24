@@ -1,0 +1,209 @@
+安装配置，普通程序代理设置见后
+=======================================================================================
+系统环境：Ubuntu 14.04 LTS
+
+安装
+
+Linux不同的发行版执行的命令如下：
+
+Debian / Ubuntu:
+apt-get install python-pip
+pip install shadowsocks
+ 
+CentOS:
+yum install python-setuptools && easy_install pip
+pip install shadowsocks
+
+配置
+
+sudo vim /etc/shadowsocks.json
+//这里的json文件是自己创建的，不是系统自带
+
+配置文件的内容大致如下：
+
+{
+    "server":"服务器的ip",
+    "server_port":19175,
+    "local_address":"127.0.0.1",
+    "local_port":1080,
+    "password":"密码",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open":false
+}
+
+启动ss客户端
+
+前两步很简单，可是有人就纳闷了安装好了不知道怎么用，其实可以用sslocal -help 来查看帮助就知道了
+
+sslocal -c /etc/shadowsocks.json
+
+一条命令代理就可以启动了。
+
+Ubuntu开机后自动运行
+
+现在可以科学上网了，可是每次开机都要手动打开终端输入一条命令，虽然这条命令并不长，但是每次都去手动输入，显得自己很low,而且关掉终端代理就关闭了。
+
+写个脚本
+
+我们可以在比如/home下新建个文件叫做shadow.sh，在里面写上我们启动ss客户端需要的命令，然后保存即可。
+
+#！/bin/bash
+#shadow.sh
+sslocal -c /etc/shadowsocks.json
+
+看可不可以我们到终端执行命令 sh /home/shadow.sh，如果成功的话会有信息输出的。你也可以到浏览器去试试。这个时候你虽然输入的少了，可是关了终端还是会掉的，我们可以让他在后台运行，nohup sh /home/shadow.sh &。
+
+加入开机运行
+
+这里我们需要在/etc下编辑一个叫rc,local的文件，需要root权限，在终端先su获取root权限，如果你有root帐号的话，然后 vim /etc/rc.local编辑，在exit之前输入nohup bash /home/shadow.sh>/home/d.txt & 保存。
+
+这个时候你可以reboot重启了，测试下看看能不能后台自动运行，重启你可以先去看下我们要他输出d.txt，你竟然发现是 /home/shadow.sh line 3 :sslocal: command not found,打开浏览器果然是无法链接代理服务器。
+
+经过一番搜索我们发现远离linux是找不到sslocal这条命令？需要添加路径，我们发现sslocal和ssserver这两个命令是被存在 /usr/local/bin下面的，其实不用去profile添加了，直接把这两个文件移动到/bin下，就可以了。
+=====================================================================================================================
+代理1设置参考一（没用过）:
+
+安装相应软件：
+
+sudo apt-get install -y python-pip
+
+pip install shadowsocks
+
+sudo apt-get install -y shadowsocks
+
+sudo apt-get install polipo
+
+
+2.2
+
+
+将以下脚本保存至任意位置如 /home/ss_config.json ,并修改其中黑色字体部分内容
+
+{
+
+    "server":"server_ip",
+
+    "server_port":443,
+
+    "local_address": "127.0.0.1",
+
+    "local_port":1080,
+
+    "password":"password",
+
+    "timeout":300,
+
+    "method":"aes-256-cfb",
+
+    "fast_open": false
+
+}
+
+
+3.3
+
+
+编辑 vi /etc/polipo/config 修改为以下内容：
+
+# This file only needs to list configuration variables that deviate
+
+# from the default values.  See /usr/share/doc/polipo/examples/config.sample
+
+# and "polipo -v" for variables you can tweak and further information.
+
+logSyslog = false
+
+logFile = "/var/log/polipo/polipo.log"
+
+socksParentProxy = "127.0.0.1:1080"
+
+socksProxyType = socks5
+
+chunkHighMark = 50331648
+
+objectHighMark = 16384
+
+serverMaxSlots = 64
+
+serverSlots = 16
+
+serverSlots1 = 32
+
+proxyAddress = "0.0.0.0"
+
+proxyPort = 8123
+
+
+4.4
+
+
+编辑 vi /etc/rc.local 增加自启动项：
+
+export http_proxy="http://127.0.0.1:8123/"
+
+sslocal -c /home/ss_config.json
+
+
+5.5
+
+
+重启后尝试执行：
+
+curl www.google.com
+=========================================================================================================================
+shadowsocks代理参考设置二（用这个）:
+http://elmagnificogi.github.io/2015/12/03/Git-Proxy/
+
+让普通命令行工具使用代理#
+
+可以在~/.profile或~/.bashrc里加上：
+
+(这两个文件在git目录中windows中叫profile或bash.bashrc)
+enable_proxy() {
+    export http_proxy="127.0.0.1:1080" 
+    export https_proxy="127.0.0.1:1080"
+}
+
+disable_proxy() {
+    unset http_proxy
+    unset https_proxy
+}
+
+
+这里的127.0.0.1：1080则刚好就是Shadowsocks的代理端口
+
+快速测试#
+
+也可以通过这样的方法来快速测试：
+$ http_proxy="127.0.0.1:1080"  curl -I http://github.com
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0HTTP/1.1 301 Moved Permanently
+Content-length: 0
+Location: https://github.com/
+Connection: close
+Proxy-Connection: keep-alive
+
+
+类似这样的则就是ok的，代理没问题，那么就能clone我的blog了
+enable_proxy；
+git clone https://github.com/elmagnificogi/elmagnificogi.github.io
+
+
+更新我的push脚本#
+
+同时我的自动push脚本也需要更新使用上面的命令才行
+enable_proxy;
+git add .;
+git commit -m "update-post";
+git remote rm origin;
+git remote add origin https://github.com/elmagnificogi/elmagnificogi.github.io.git;
+git push -u origin master
+
+
+经过这些折腾基本就ok了
+
+
+
+

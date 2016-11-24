@@ -1,0 +1,9 @@
+TODO:
+写git-windows/ubuntu下的配置攻略
+写shadowsock的ubuntu配置攻略
+
+======
+c++工具类
+调试内存越界
+gflags
+======

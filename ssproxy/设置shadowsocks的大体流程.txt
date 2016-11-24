@@ -1,0 +1,7 @@
+1.在搬瓦工买个vps
+2.在vps上设置shadowsocks的服务器
+3.在ubuntu上设置客户端
+4.代理:polipo
+5.设置开机启动想rc.local 自动开启ssclient和polipo服务
+6.在/etc/enviroment设置环境变量 http_proxy="http://127.0.0.1:8123"
+7.对于git,还要设置其代理项，见git文件夹相关文件

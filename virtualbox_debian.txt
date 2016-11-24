@@ -1,0 +1,7 @@
+1.在安装debian的时候，遇到了两个导致失败的原因：一个是没有bios里面的cpu虚拟支持，一个是virtualbox和debian之间的版本不匹配导致的安装不成功
+2.安装增强功能以支持共享文件夹的时候遇到了几个失败的原因：
+一是没有用root用户去安装增强功能
+二是没有安装gcc/make
+三是没有安装linux-headers: apt-get install linux-headers-$(uname -r)
+3.在设置桥接模式的时候，遇到一个坑是debian里面没有设置dhcp，导致一直不能连网
+
