@@ -5,4 +5,6 @@
 三是没有安装linux-headers: apt-get install linux-headers-$(uname -r)
 3.在设置桥接模式的时候，遇到一个坑是debian里面没有设置dhcp，导致一直不能连网
 4.在svncheckout的时候遇到ssl报错，最后发现是证书文件权限的问题,把用户名和组改成当前用户就好了
-
+5.apt-get install遇到问题:
+“InRelease: Clearsigned file isn't valid, got 'NODATA' (does the network require authentication?)” when updating package list
+好吧。。。这种问题一般都是proxy的问题，最后发现改成桥接模式后，上午需要认证了。做一下认证。
