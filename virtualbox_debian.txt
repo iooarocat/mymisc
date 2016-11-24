@@ -4,4 +4,5 @@
 二是没有安装gcc/make
 三是没有安装linux-headers: apt-get install linux-headers-$(uname -r)
 3.在设置桥接模式的时候，遇到一个坑是debian里面没有设置dhcp，导致一直不能连网
+4.在svncheckout的时候遇到ssl报错，最后发现是证书文件权限的问题,把用户名和组改成当前用户就好了
 
