@@ -51,4 +51,18 @@ You can now restart eth0 by doing :
 sudo ifdown eth0
 sudo ifup eth0
 
+5.【添加用户到sudo】
+sudo adduser <username> sudo
+运行visudo
+找到root ALL=(ALL) ALL，在下面添加一行
+xxx ALL=(ALL) ALL 其中xxx是你要加入的用户名称
+
+6.【screen命令相关】
+列出进程 screen -ls
+重新连接会话：screen -r 12865
+在screen窗口键入Ctrl+a+d离开会话
+如果你在另一台机器上没有分离一个Screen会话，就无从恢复会话了。这时可以使用下面命令强制将这个会话从它所在的终端分离，转移到新的终端上来：screen -d
+如果由于某种原因其中一个会话死掉了（例如人为杀掉该会话），这时screen -list会显示该会话为dead状态。使用screen -wipe命令清除该会话：
+
+
 

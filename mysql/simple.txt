@@ -1,0 +1,3 @@
+安装： mysqld install
+启动： net start mysql 
+改root密码：mysqladmin -u root password 123
