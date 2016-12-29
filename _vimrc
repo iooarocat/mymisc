@@ -170,6 +170,7 @@ imap <leader><leader> <leader><esc>a<esc>
 
 "nerdtree
 map <f10> :NERDTree<cr>
+nn <silent><f11> :exec("NERDTree ".expand('%:h'))<CR>
 
 "×ÖÌו
 set guifont=Consolas:h10
