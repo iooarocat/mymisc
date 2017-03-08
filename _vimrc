@@ -178,5 +178,7 @@ nn <silent><f11> :exec("NERDTree ".expand('%:h'))<CR>
 set guifont=Consolas:h10
 
 "查找的时候用 /\V开头客禁掉正则
+"括号的匹配: [/ xdb()]以及 [Ag xdb()] 这个时候就不需要加\V 和-Q
+"替换选中: 先选中，然后输入：，这个时候会自动出一堆符号，保留，继续输入s/source/target/g   s前面的表示替换范围, 如果是%,表示整个文件
 
 
