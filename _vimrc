@@ -11,6 +11,8 @@ function _chdir(flag)
 		let dir = "z:\\zhurong\\program\\engine"
 	elseif a:flag == "arkpipe"
 		let dir = "Z:\\zhurong\\program\\engine\\src\\ArkPipe"
+	elseif a:flag == "ddt"
+		let dir = "Z:\\zhurong\\design\\tools\\DesignDataTool\\DesignDataTool\\Output"
 	endif
 	let cmd = 'cd ' . dir
 	execute(cmd)
@@ -133,10 +135,10 @@ nnoremap <leader>g :YcmCompleter GoToDefinitionElseDeclaration<CR>
 map <F2> yq:i/<esc>p<cr>
 
 "ag
-map <leader>f :Ag 
+map <leader>f :Ag -Q 
 "先选中文本,然后全局查找
-map <f3> yq:iAg <esc>p<cr>
-map <f4> yiwq:iAg <esc>p<cr>
+map <f3> yq:iAg -Q <esc>p<cr>
+map <f4> yiwq:iAg -Q <esc>p<cr>
 
 "窗口宽度
 map <c-d><c-d> :vertical res+3<cr>
@@ -174,5 +176,7 @@ nn <silent><f11> :exec("NERDTree ".expand('%:h'))<CR>
 
 "字体
 set guifont=Consolas:h10
+
+"查找的时候用 /\V开头客禁掉正则
 
 
