@@ -30,6 +30,7 @@ function _replaceall(s,t)
 	execute(cmd)
 endfunction
 command! -nargs=* Replaceall :call _replaceall(<f-args>)
+
 "==============function end================
 "
 "祝融
@@ -40,6 +41,10 @@ set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set encoding=utf-8"这个是vim内部用的编码,Vim内部所有的buffer、寄存器、脚本中的字符串等，全都使用这个编码.所以，当插件读取buffer中的文件内容的时候，编码是以这个编码为准，而不是filencoding的编码。坑大发了。
 set langmenu=zh_CN.UTF-8
 language message zh_CN.UTF-8
+
+"换行"
+set tw=80
+set fo+=w
 
 let workingdir = "z:\\zhurong\\program\\game"
 "let workingdir = "z:\\zhurong\\design"
@@ -99,8 +104,8 @@ set guioptions -=T
 set guioptions -=m
 
 "tab
-set ts=2
-set shiftwidth=2
+set ts=4
+set shiftwidth=4
 "set expandtab tab转空格
 
 "搜索高亮
@@ -178,7 +183,7 @@ nn <silent><f11> :exec("NERDTree ".expand('%:h'))<CR>
 set guifont=Consolas:h10
 
 "查找的时候用 /\V开头客禁掉正则
-"括号的匹配: [/ xdb()]以及 [Ag xdb()] 这个时候就不需要加\V 和-Q
+"括号自身的匹配: [/ xdb()]以及 [Ag xdb()] 这个时候就不需要加\V 和-Q
 "替换选中: 先选中，然后输入：，这个时候会自动出一堆符号，保留，继续输入s/source/target/g   s前面的表示替换范围, 如果是%,表示整个文件
 
 
