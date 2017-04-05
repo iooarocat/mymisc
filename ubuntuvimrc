@@ -2,17 +2,9 @@
 function _chdir(flag)
 	let dir = ""
 	if a:flag == "game"  
-		let dir = "z:\\zhurong\\program\\game"
+		let dir = "xxx"
 	elseif a:flag == "design" 
-		let dir = "z:\\zhurong\\design"
-	elseif a:flag == "etc" 
-		let dir = "z:\\zhurong\\program\\etc"
-	elseif a:flag == "engine"
-		let dir = "z:\\zhurong\\program\\engine"
-	elseif a:flag == "arkpipe"
-		let dir = "Z:\\zhurong\\program\\engine\\src\\ArkPipe"
-	elseif a:flag == "ddt"
-		let dir = "Z:\\zhurong\\design\\tools\\DesignDataTool\\DesignDataTool\\Output"
+		let dir = "yyy"
 	endif
 	let cmd = 'cd ' . dir
 	execute(cmd)
