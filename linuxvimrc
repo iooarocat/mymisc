@@ -1,4 +1,35 @@
 "==============function begin================
+function _chdir(flag)
+	let dir = ""
+	if a:flag == "game"  
+		let dir = "z:\\zhurong\\program\\game"
+	elseif a:flag == "design" 
+		let dir = "z:\\zhurong\\design"
+	elseif a:flag == "etc" 
+		let dir = "z:\\zhurong\\program\\etc"
+	elseif a:flag == "engine"
+		let dir = "z:\\zhurong\\program\\engine"
+	elseif a:flag == "arkpipe"
+		let dir = "Z:\\zhurong\\program\\engine\\src\\ArkPipe"
+	elseif a:flag == "ddt"
+		let dir = "Z:\\zhurong\\design\\tools\\DesignDataTool\\DesignDataTool\\Output"
+	endif
+	let cmd = 'cd ' . dir
+	execute(cmd)
+endfunction
+command! -nargs=* Mycd :call _chdir(<f-args>)
+
+function _replaceall(s,t)
+	let cmd = ':args ' . getcwd() . '\*.*'
+	execute(cmd)
+	let cmd = ':argdo %s/' . a:s . '/' . a:t . '/ge | update'
+	execute(cmd)
+	let cmd = ':args ' . getcwd() . '\**\*.*'
+	execute(cmd)
+	let cmd = ':argdo %s/' . a:s . '/' . a:t . '/ge | update'
+	execute(cmd)
+endfunction
+command! -nargs=* Replaceall :call _replaceall(<f-args>)
 
 "==============function end================
 "
@@ -6,21 +37,36 @@
 "编码
 set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set encoding=utf-8"这个是vim内部用的编码,Vim内部所有的buffer、寄存器、脚本中的字符串等，全都使用这个编码.所以，当插件读取buffer中的文件内容的时候，编码是以这个编码为准，而不是filencoding的编码。坑大发了。
+set langmenu=zh_CN.UTF-8
+language message zh_CN.UTF-8
 
 "换行"
 set tw=80
 set fo+=w
 
-let workingdir = "~/torch1"
+let workingdir = "~/torch"
 exe 'cd ' workingdir
 
 "===================================
+function _opendir()  
+    if ( expand("%") != "" )  
+        execute "!start explorer /select, %"   
+    else  
+        execute "!start explorer /select, %:p:h"  
+    endif  
+endfunction  
+command! -nargs=* Opendir :call _opendir()
 
+"python path
+"let $PYTHONPATH = "C:\\Python27\\Lib;C:\\Python27\\DLLs;C:\\Python27\\Lib\\lib-tk"
+
+"==================pathogen===============
+"execute pathogen#infect() 
 "==================vundle插件 begin===============
 filetype off  
 " 此处规定Vundle的路径  
-set rtp+=~/.vim/bundle/Vundle.vim  
-call vundle#begin()
+set rtp+=~/.vim/bundle/vundle/  
+call vundle#rc('~/.vim/bundle/')  
 Bundle 'gmarik/vundle'  
 
 filetype plugin indent on  
@@ -35,10 +81,9 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'rking/ag.vim'
 "Bundle 'mileszs/ack.vim'
 Bundle 'easymotion/vim-easymotion'
-"Bundle 'Valloric/YouCompleteMe'
+Bundle 'Valloric/YouCompleteMe'
 Bundle 'scrooloose/nerdtree'
 "Bundle 'scrooloose/syntastic'
-call vundle#end()
 filetype plugin indent on     " required!  
 "==================vundle插件 end===============
 
@@ -50,6 +95,10 @@ set nu
 
 "换行
 "set nowrap
+
+"隐藏工具栏
+set guioptions -=T
+set guioptions -=m
 
 "tab
 set ts=4
@@ -66,13 +115,21 @@ set ic
 let mapleader=";"
 
 "配色
-"colorscheme solarized
+set background=dark
+colorscheme solarized
 set cursorline
-hi CursorLine ctermfg=white  ctermbg=black
+hi CursorLine guibg=white guifg=black
 "set cursorcolumn
-"hi CursorColumn ctermfg=white ctermbg=black
-"hi Comment gui=none
-"hi Cursor guibg=white guifg=black
+"hi CursorColumn guibg=black 
+hi Comment gui=none
+hi Cursor guibg=black guifg=white
+"
+"字体
+if has("gui_gtk2")
+	set guifont=Monospace\ 11
+elseif has("gui_win32")
+	set guifont=Consolas:h11
+end
 
 "ctrlp
 "设置搜索路径为固定目录
@@ -92,6 +149,13 @@ map <leader>f :Ag -Q
 "先选中文本,然后全局查找
 map <f3> yq:iAg -Q <esc>p<cr>
 map <f4> yiwq:iAg -Q <esc>p<cr>
+
+"窗口宽度
+map <c-d><c-d> :vertical res+3<cr>
+map <c-x><c-x> :vertical res-3<cr>
+"窗口高度
+map <c-g><c-g> :res+3<cr>
+map <c-a><c-a> :res-3<cr>
 
 "替换文本中所有当前光标所在单词:复制单词然后在q窗口里面构造 :%s /source/target/g
 map <leader>r yiwq:i%s /<esc>pa//g<esc>hha
@@ -117,11 +181,9 @@ imap <leader>l <esc>la
 imap <leader><leader> <leader><esc>a<esc>
 
 "nerdtree
-map <f9> :NERDTree<cr>
+map <f10> :NERDTree<cr>
 nn <silent><f11> :exec("NERDTree ".expand('%:h'))<CR>
 
-"字体
-set guifont=Consolas:h10
 
 "查找的时候用 /\V开头客禁掉正则
 "括号自身的匹配: [/ xdb()]以及 [Ag xdb()] 这个时候就不需要加\V 和-Q
