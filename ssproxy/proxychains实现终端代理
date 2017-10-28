@@ -1,0 +1,27 @@
+安装proxychains
+sudo apt install proxychains
+
+配置proxychains
+编辑/etc/proxychains.conf，最下面有一行socks4 127.0.0.1 9050，把这一行注释掉，添加一行socks5 127.0.0.1 1080
+
+测试
+proxychains curl www.google.com
+
+
+￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥￥
+解决'libproxychains.so.3' from LD_PRELOAD cannot be preloaded问题
+
+修改/usr/bin/proxychains文件：
+export LD_PRELOAD=libproxychains.so.3
+改为
+export LD_PRELOAD=/usr/lib/libproxychains.so.3
+但是保存后还是会提示无法加载该库。
+
+所以呢，用find命令找一下该库吧：
+
+➜  ~  find /usr/ -name libproxychains.so.3 -print
+/usr/lib/x86_64-linux-gnu/libproxychains.so.3
+
+所以改为
+/usr/lib/x86_64-linux-gnu/libproxychains.so.3
+就可以了
