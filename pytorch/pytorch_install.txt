@@ -1,0 +1,21 @@
+记录安装pytorch的大概经历
+n年前买的一台搓搓的笔记本,闲置中,用来当练手机子了
+环境 ubuntu14 gt540m 
+先是在pytorch的官网用那条命令装,由于是在国内,自然就没装成功。
+看网上有的人是从镜像搞安装包+从源码编译安装，感觉比起设置翻墙，也不简单。
+由于之前在搬瓦工搭了个ss服务端，于是ubuntu上系统设置中设置了socks客户端，好，浏览器可以上网，然而，终端不行，还是不能安装。
+网上继续查终端代理的方法，看到proxychains，于是安装proxychains之后，成功安装好了pytorch.
+开始学习pytorch了，结果发现cuda不可用，报错说显卡驱动的问题，于是去nvidia官网下载驱动。
+开始安装驱动。。。提示说已有驱动了，最好先卸载现有驱动。
+卸载已有的驱动。。。提示说xserver跑着，要关掉ui界面。
+于是网上查怎么关掉。。。ctrl+alt+f1(1-6都行,7返回界面)进入命令行，关掉lightdm
+好了，继续安装。。。完毕，重启，输入密码。。。咦，怎么还是登陆界面，难道刚才没输入密码？输入密码。。。mmp,怎么又回到了登陆界面。。。
+网上查ubuntu循环登陆的问题，尝试了几种方法都不行，最后遇到下面这种方法，可以了：
+1.sudo apt-get remove -purge nvidia*
+2.sudo chmod a+x NVIDIA_INSTALLER.run
+3.sudo ./NVIDIA_INSTALLER.run -no-x-check -no-nouveau-check -no-opengl-files
+重启，终于没循环登陆了
+在juypter notebook中试了下torch.cuda.is_available(),终于可以了
+
+
+
