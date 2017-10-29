@@ -15,7 +15,7 @@ n年前买的一台搓搓的笔记本,闲置中,用来当练手机子了
 2.sudo chmod a+x NVIDIA_INSTALLER.run
 3.sudo ./NVIDIA_INSTALLER.run -no-x-check -no-nouveau-check -no-opengl-files
 重启，终于没循环登陆了
-在juypter notebook中试了下torch.cuda.is_available(),终于可以了
+在jupyter notebook中试了下torch.cuda.is_available(),终于可以了
 
 
 
